@@ -8,28 +8,32 @@ export function useAuth() {
 }
 
 export function AuthProvider({ children }) {
+
   function logout() {
     return auth.signOut();
   }
-  const [currentUser, setCurrentUser] = useState();
+  const [currentUser, setCurrentUser] = useState("none");
+  const [isLoggedIn, setIsLoggedIn] = useState("NO");
+
   const value = {
     currentUser,
+    isLoggedIn,
     logout,
   };
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(user => {
-        if (user) {
-            console.log(user.displayName)
-            setCurrentUser(user.displayName)
-          } else {
-            console.log("none")
-            setCurrentUser("none")
-          }
-      
-      
-    })
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+       
+        setCurrentUser(user.displayName);
+        setIsLoggedIn(true);
+  
+      } else {
+        setCurrentUser("none");
+        setIsLoggedIn(false);
+      }
+    });
 
-    return unsubscribe
-  }, [])
+    return unsubscribe;
+  }, [isLoggedIn]);
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

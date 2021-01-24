@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import firebase from 'firebase/app';
+import firebase from 'firebase';
 import 'firebase/firestore';
 import 'firebase/auth';
 
@@ -22,4 +22,7 @@ const provider = new firebase.auth.GoogleAuthProvider();
 
 export const signInWithGoogle = () => auth.signInWithPopup(provider);
 
-export default firebase;
+ const db = firebase.firestore();
+
+export {firebase, db};
+
