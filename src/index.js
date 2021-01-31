@@ -1,16 +1,16 @@
 
-import React, {useContext} from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import { AuthProvider } from '../src/providers/UserProvider'
 import "./App.css"
 
 ReactDOM.render(
-  <React.StrictMode>
+ 
       <AuthProvider> 
     <App />
     </AuthProvider>
-  </React.StrictMode>,
+ ,
   document.getElementById('root')
 );
 

@@ -4,23 +4,53 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import { db, firebase, app } from "../../firebase/firebase";
+import { db, firebase } from "../../firebase/firebase";
 import { useAuth } from "../../providers/UserProvider";
 
-function NewCompButton(props) {
+function JoinComp(props) {
   const [compName, setCompName] = useState();
-  const [bannerLink, setBannerLink] = useState();
-  const { currentUser, userEmail, logout } = useAuth();
+
+  const { currentUser, userEmail } = useAuth();
+  const joinComp = (e) => {
+    
+    e.preventDefault();
+    const compRef = db.collection("Competitions").doc(inputValue);
+    compRef
+      .get()
+      .then(function (doc) {
+        if (!doc.exists) {
+          alert("Competition does not exist");
+        } else {
+          db.collection("users")
+            .doc(userEmail)
+            .update(
+              "enrolledIn",
+              firebase.firestore.FieldValue.arrayUnion({compName: inputValue})
+            );
+          compRef.update(
+            "members",
+            firebase.firestore.FieldValue.arrayUnion(userEmail)
+          );
+          alert("joined" + inputValue);
+          setInputValue("")
+        }
+        console.log("Enrolled in: " + inputValue);
+      })
+      .catch(function (error) {
+        console.log("Error getting document:", error);
+      });
+    
+  };
   const handleInput = (event) => {
     console.log(event.target.value);
     setCompName(event.target.value);
   };
 
-  const handleCreate = async (e) => {
+  const handleCreate = (e) => {
     e.preventDefault();
     console.log("handdlinnngngg Creeeaaatee");
     
-    const usersRef = await db.collection("users").doc(userEmail);
+    const usersRef = db.collection("users").doc(userEmail);
 
 
     db.collection("Competitions")
@@ -28,7 +58,6 @@ function NewCompButton(props) {
       .set({
         owner: currentUser,
         members: [userEmail],
-        banner: bannerLink
       });
     usersRef.update(
       "enrolledIn",
@@ -36,18 +65,6 @@ function NewCompButton(props) {
     );
    
   };
-const onChange = async (e) => {
-  const compRef = db.collection("Competitions").doc(compName);
-  const file = await e.target.files[0]
-  const storageRef =  app.storage().ref();
-  const fileRef = storageRef.child(file.name);
-  await fileRef.put(file)
-  await fileRef.getDownloadURL().then(url => {
-   setBannerLink(url);
- })
- 
-  }
-
 
   return (
     
@@ -105,12 +122,7 @@ const onChange = async (e) => {
               </Col>
             </Form.Group>
           </fieldset>
-        <Form.Group>
-        <Form.Label column sm={2}>
-              Banner
-            </Form.Label>
-            <input onChange={onChange} type="file"></input>
-        </Form.Group>
+        
       </Modal.Body>
       <Modal.Footer>
          <div onClick={props.onHide}>
@@ -126,4 +138,4 @@ const onChange = async (e) => {
   );
 }
 
-export default NewCompButton;
+export default JoinComp;

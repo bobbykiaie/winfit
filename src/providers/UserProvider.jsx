@@ -9,26 +9,33 @@ export function useAuth() {
 
 export function AuthProvider({ children }) {
 
+  const [currentUser, setCurrentUser] = useState(null);
+  const [userEmail, setUserEmail] = useState(null)
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   function logout() {
+    setCurrentUser(null)
+    setUserEmail(null)
     return auth.signOut();
   }
-  const [currentUser, setCurrentUser] = useState("none");
-  const [isLoggedIn, setIsLoggedIn] = useState("NO");
-
+  
   const value = {
     currentUser,
+    userEmail,
     isLoggedIn,
     logout,
   };
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
+    const unsubscribe =  auth.onAuthStateChanged((user) => {
       if (user) {
        
         setCurrentUser(user.displayName);
+        setUserEmail(user.email);
         setIsLoggedIn(true);
+        console.log("current user name: " + currentUser)
   
       } else {
-        setCurrentUser("none");
+        setCurrentUser(null);
         setIsLoggedIn(false);
       }
     });

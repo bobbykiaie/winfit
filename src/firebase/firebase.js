@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 import firebase from 'firebase';
+import 'firebase/storage';
 import 'firebase/firestore';
 import 'firebase/auth';
 
@@ -16,7 +17,8 @@ const config = ({
   measurementId: process.env.REACT_APP_MEASUREMENT_ID
 });
 
-firebase.initializeApp(config)
+const app =firebase.initializeApp(config)
+
 export const auth = firebase.auth();
 const provider = new firebase.auth.GoogleAuthProvider();
 
@@ -24,5 +26,5 @@ export const signInWithGoogle = () => auth.signInWithPopup(provider);
 
  const db = firebase.firestore();
 
-export {firebase, db};
+export {firebase, db, app};
 
