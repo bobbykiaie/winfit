@@ -10,9 +10,9 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { signInWithGoogle } from "../../firebase/firebase";
-
+import { AuthProvider, useAuth } from "../../providers/UserProvider";
 import logo from "../pages/logo.png";
-
+import { db } from "../../firebase/firebase";
 import Copyright from "../items/Copyright";
 
 const useStyles = makeStyles((theme) => ({

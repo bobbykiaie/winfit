@@ -5,8 +5,9 @@ import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
-import { db, firebase } from "../../firebase/firebase";
+import { db } from "../../firebase/firebase";
 import Typography from "@material-ui/core/Typography";
+import { useAuth } from "../../providers/UserProvider";
 
 const useStyles = makeStyles({
   root: {
@@ -17,12 +18,11 @@ const useStyles = makeStyles({
   },
 });
 
-export default function MediaCard(prop) {
-    var info = prop.prop;
-  
-console.log("logging the prop");
-console.log(info)
-const [banner, setBanner] = useState("");
+export default function  MediaCard(prop) {
+  const info = prop.prop;
+  const { currentUser, userEmail } = useAuth();
+   const [banner, setBanner] =  useState("");
+  const [compName, setCompName] =  useState("");
   const classes = useStyles();
   // const [enrolledComp, setEnrolledComp] = useState()
   // const { currentUser, userEmail, logout } = useAuth();
@@ -34,59 +34,75 @@ const [banner, setBanner] = useState("");
   //       setEnrolledComp(enrolled[enrolled.length -1].compName);
   //     }
   //   });
-  
+
   // }
 
+  useEffect(() => {
   
+   if(info){
+    const pullComps = async (result) => {
+      console.log("result from pullComps is: " +result)
+      const compRef = await db.collection("Competitions").doc(result);
+      await compRef.get().then( async (doc) => {
+       if(doc.exists){
+        setCompName(doc.data().compName);
+        setBanner(doc.data().banner)
 
-  useEffect((prop)=>{
-    const loggData = async () => {
-      await console.log("Prop from useEffect in compCard")
-      await console.log(prop)
-      await console.log("End Logging prop")
-    }
-    loggData();
- 
-    if (info) {
-      const compRef = db.collection("Competitions").doc(info);
-      compRef.get().then((doc)=>{
-        if(doc.data()) {
-          setBanner(doc.data().banner)
-        } else {
-         
-          setBanner("https://www.thoughtco.com/thmb/hHBJvtStNc0h39CaXiYxe0J5RXo=/768x0/filters:no_upscale():max_bytes(150000):strip_icc()/statueofzeus-58b9e03e3df78c353c4d9e95-5b60869746e0fb002cee3eb1.jpg")
-        }
-      })
-    } else {
+       } else {
+         console.log("non such comp")
+       }
+       
+      });
+  
+    };
+    const createCard = async () => {
+      if (!info) {
+      console.log("No info")
+      } else {
+        await info.then(async (result) => {
+          console.log("logging result")
       
-      setBanner("https://www.thoughtco.com/thmb/hHBJvtStNc0h39CaXiYxe0J5RXo=/768x0/filters:no_upscale():max_bytes(150000):strip_icc()/statueofzeus-58b9e03e3df78c353c4d9e95-5b60869746e0fb002cee3eb1.jpg")
-    }
+          await pullComps(result)
+          
+          
+         
+       
+        });
+      }
+    };
+     createCard();
+   }
+   
    
 
-  },[])
+    // else {
+    //   setCompName("Create a Competition")
+    //   setBanner("https://t4.ftcdn.net/jpg/03/60/70/11/360_F_360701167_9dolp6h5cfm5i9uC8QObRzhog1mc1gI0.jpg")
+    // }
+
+    
+  }, [info]);
 
   return (
     <div>
-    <Card className={classes.root}>
-      <CardActionArea>
-        <CardMedia
-          className={classes.media}
-          image={banner}
-          title="Contemplative Reptile"
-        />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
-         {info}
-          </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-            Days Remaining: 6
-          </Typography>
-        </CardContent>
-      </CardActionArea>
-      <CardActions>
-        
-      </CardActions>
-    </Card>
+      <Card className={classes.root}>
+        <CardActionArea>
+          <CardMedia
+            className={classes.media}
+            image={banner}
+            title="Contemplative Reptile"
+          />
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="h2">
+              {compName}
+            </Typography>
+            <Typography variant="body2" color="textSecondary" component="p">
+              Days Remaining: 6
+            </Typography>
+          </CardContent>
+        </CardActionArea>
+        <CardActions></CardActions>
+      </Card>
     </div>
   );
 }

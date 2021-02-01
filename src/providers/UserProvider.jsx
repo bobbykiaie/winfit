@@ -12,11 +12,15 @@ export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
   const [userEmail, setUserEmail] = useState(null)
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [refreshState, setRefreshState] = useState(false)
 
   function logout() {
     setCurrentUser(null)
     setUserEmail(null)
     return auth.signOut();
+  }
+  function refresh(state) {
+    setRefreshState(state)
   }
   
   const value = {
@@ -24,6 +28,8 @@ export function AuthProvider({ children }) {
     userEmail,
     isLoggedIn,
     logout,
+    refreshState,
+    refresh
   };
   useEffect(() => {
     const unsubscribe =  auth.onAuthStateChanged((user) => {

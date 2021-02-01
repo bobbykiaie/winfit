@@ -11,36 +11,7 @@ function JoinComp(props) {
   const [compName, setCompName] = useState();
 
   const { currentUser, userEmail } = useAuth();
-  const joinComp = (e) => {
-    
-    e.preventDefault();
-    const compRef = db.collection("Competitions").doc(inputValue);
-    compRef
-      .get()
-      .then(function (doc) {
-        if (!doc.exists) {
-          alert("Competition does not exist");
-        } else {
-          db.collection("users")
-            .doc(userEmail)
-            .update(
-              "enrolledIn",
-              firebase.firestore.FieldValue.arrayUnion({compName: inputValue})
-            );
-          compRef.update(
-            "members",
-            firebase.firestore.FieldValue.arrayUnion(userEmail)
-          );
-          alert("joined" + inputValue);
-          setInputValue("")
-        }
-        console.log("Enrolled in: " + inputValue);
-      })
-      .catch(function (error) {
-        console.log("Error getting document:", error);
-      });
-    
-  };
+  
   const handleInput = (event) => {
     console.log(event.target.value);
     setCompName(event.target.value);
@@ -51,7 +22,7 @@ function JoinComp(props) {
     console.log("handdlinnngngg Creeeaaatee");
     
     const usersRef = db.collection("users").doc(userEmail);
-
+    const compRef = db.collection("Competitions").doc(compName);
 
     db.collection("Competitions")
       .doc(compName)
