@@ -7,10 +7,8 @@ import { useAuth } from "../../providers/UserProvider";
 import NewCompButton from "./NewCompetition";
 import Button from "react-bootstrap/Button";
 import MediaCard from "../items/CompCard";
-import styled from "styled-components";
 import Paper from "@material-ui/core/Paper";
 import Form from "react-bootstrap/Form";
-import { setRef } from "@material-ui/core";
 
 const Dashboard = () => {
   const { currentUser, userEmail, refresh, refreshState } = useAuth();

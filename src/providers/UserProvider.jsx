@@ -11,7 +11,7 @@ export function AuthProvider({ children }) {
 
   const [currentUser, setCurrentUser] = useState(null);
   const [userEmail, setUserEmail] = useState(null)
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState();
   const [refreshState, setRefreshState] = useState(false)
 
   function logout() {
