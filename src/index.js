@@ -6,7 +6,7 @@ import { AuthProvider } from '../src/providers/UserProvider'
 import "./App.css"
 
 ReactDOM.render(
- 
+
       <AuthProvider> 
     <App />
     </AuthProvider>

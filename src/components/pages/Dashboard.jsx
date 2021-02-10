@@ -9,13 +9,16 @@ import Button from "react-bootstrap/Button";
 import MediaCard from "../items/CompCard";
 import Paper from "@material-ui/core/Paper";
 import Form from "react-bootstrap/Form";
+import UpdateStats from "../items/UpdateStats";
 
 const Dashboard = () => {
   const { currentUser, userEmail, refresh, refreshState } = useAuth();
   const [modalShow, setModalShow] = React.useState(false);
+  const [modalShow2, setModalShow2] = React.useState(false);
   const [inputValue, setInputValue] = useState("");
   const [enrolledComps, setEnrolledComps] = useState([""]);
-
+  const [calories, setCalories] = useState();
+  const [steps, setSteps] = useState();
 
   const handleChange = (e) => {
     setInputValue(e.target.value);
@@ -49,7 +52,7 @@ const Dashboard = () => {
       .catch(function (error) {
         console.log("Error getting document:", error);
       });
-      refresh(true)
+    refresh(true);
   };
 
   const addUser = () => {
@@ -76,7 +79,8 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-   
+    var mydate = require("current-date");
+    const todaysDate = mydate("date");
     console.log("Starting Useefffect from dashboard with");
     console.log(userEmail);
     const usersRef = db.collection("users").doc(userEmail);
@@ -89,19 +93,12 @@ const Dashboard = () => {
     });
     console.log("fisnihed add user check");
     const getComps = async () => {
-      console.log("starting get comps");
       const usersRef = db.collection("users").doc(userEmail);
       await usersRef.get().then((doc) => {
-        console.log("this is the doc dawg:");
-        console.log(doc.data());
         if (doc.exists) {
-          console.log("the doc exists and its the follwoing:");
-          console.log(doc.data());
           const received = doc.data().enrolledIn;
-          console.log("Logging the enrolled competionts from useffect");
-          console.log(received);
+
           if (!received) {
-            console.log("Not enrolled");
             setEnrolledComps(["None"]);
           } else {
             const compNameList = received.map(
@@ -114,23 +111,37 @@ const Dashboard = () => {
             } else {
               setEnrolledComps(compNameList);
             }
-
-            console.log("these are the enrolled ocmps");
-            console.log(enrolledComps);
           }
         }
       });
     };
-
-    getComps();
-    refresh(false)
+    const userRef2 = db.collection("users").doc(userEmail).collection("stats").doc(todaysDate);
     
+userRef2.get().then((doc)=>{
+  if(doc.exists){
+    const todaysDate = mydate("date");
+    setCalories(doc.data().calories);
+    setSteps(doc.data().steps);
+  } else {
+    userRef2.set({
+       steps: "None", calories: "None" 
+    })
+  }
+})
+    getComps();
+    refresh(false);
   }, [refreshState]);
   return (
     <Container fluid>
       <Row>
         <Col className="mx-auto">
           <h1>Welcome {currentUser}</h1>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <h5>Calories: {calories}</h5>
+          <h5>Steps: {steps}</h5>
         </Col>
       </Row>
       <Container fluid>
@@ -158,9 +169,14 @@ const Dashboard = () => {
       </Container>
       <Container fluid>
         <Row className="mb-3">
-          <Col className="mt-3">
+          <Col md={4} className="mt-3">
             <Button variant="outline-dark" onClick={() => setModalShow(true)}>
               Create Competition
+            </Button>
+          </Col>
+          <Col md={10} className="mt-3">
+            <Button variant="outline-dark" onClick={() => setModalShow2(true)}>
+              Update Stats
             </Button>
           </Col>
         </Row>
@@ -168,9 +184,12 @@ const Dashboard = () => {
         <Row>
           <Col>
             <NewCompButton
-              
               show={modalShow}
               onHide={() => setModalShow(false)}
+            />
+            <UpdateStats
+              show={modalShow2}
+              onHide={() => setModalShow2(false)}
             />
           </Col>
         </Row>
