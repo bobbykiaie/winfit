@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "test": "winfit-302321",
+    "default": "winfit-302321"
+  }
+}
