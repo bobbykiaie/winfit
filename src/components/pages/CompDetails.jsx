@@ -84,9 +84,7 @@ const CompDetails = (props) => {
 
         userRef.get().then(async (doc) => {
           if (doc.exists) {
-            if (memberData[0]==="none"){
-              setMemberData([])
-            }
+            
             setMemberData((prevData) => {
               console.log(prevData);
              
@@ -107,6 +105,7 @@ const CompDetails = (props) => {
     }
   };
   useEffect(() => {
+    setMemberData([])
     getMembers();
   }, [refreshing]);
 
