@@ -1,0 +1,95 @@
+[debug] [2021-02-10T06:57:36.776Z] ----------------------------------------------------------------------
+[debug] [2021-02-10T06:57:36.777Z] Command:       /usr/local/bin/node /usr/local/bin/firebase init
+[debug] [2021-02-10T06:57:36.778Z] CLI Version:   9.3.0
+[debug] [2021-02-10T06:57:36.778Z] Platform:      darwin
+[debug] [2021-02-10T06:57:36.778Z] Node Version:  v15.5.1
+[debug] [2021-02-10T06:57:36.779Z] Time:          Tue Feb 09 2021 22:57:36 GMT-0800 (Pacific Standard Time)
+[debug] [2021-02-10T06:57:36.779Z] ----------------------------------------------------------------------
+[debug] [2021-02-10T06:57:36.779Z] 
+[debug] [2021-02-10T06:57:36.785Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2021-02-10T06:57:36.785Z] > authorizing via signed-in user
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  /Users/babakkiaie/Documents/Development/winfit
+
+Before we get started, keep in mind:
+
+  * You are initializing in an existing Firebase project directory
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[debug] [2021-02-10T06:57:40.639Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/winfit [none]
+[debug] [2021-02-10T06:57:41.434Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/winfit 403
+[debug] [2021-02-10T06:57:41.435Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/winfit {"error":{"code":403,"message":"The caller does not have permission","status":"PERMISSION_DENIED"}}
+[debug] [2021-02-10T06:57:41.436Z] HTTP Error: 403, The caller does not have permission
+[debug] [2021-02-10T06:57:41.548Z] FirebaseError: HTTP Error: 403, The caller does not have permission
+    at module.exports (/usr/local/lib/node_modules/firebase-tools/lib/responseToError.js:38:12)
+    at Client.doRequest (/usr/local/lib/node_modules/firebase-tools/lib/apiv2.js:227:23)
+    at processTicksAndRejections (node:internal/process/task_queues:93:5)
+    at async Client.request (/usr/local/lib/node_modules/firebase-tools/lib/apiv2.js:93:20)
+    at async Object.getFirebaseProject (/usr/local/lib/node_modules/firebase-tools/lib/management/projects.js:289:21)
+    at async Object.doSetup [as project] (/usr/local/lib/node_modules/firebase-tools/lib/init/features/project.js:84:27)
+    at async init (/usr/local/lib/node_modules/firebase-tools/lib/init/index.js:19:9)
+[error] 
+[error] Error: Failed to get Firebase project winfit. Please make sure the project exists and your account has permission to access it.
+[debug] [2021-02-10T06:58:37.032Z] ----------------------------------------------------------------------
+[debug] [2021-02-10T06:58:37.033Z] Command:       /usr/local/bin/node /usr/local/bin/firebase deploy
+[debug] [2021-02-10T06:58:37.033Z] CLI Version:   9.3.0
+[debug] [2021-02-10T06:58:37.033Z] Platform:      darwin
+[debug] [2021-02-10T06:58:37.033Z] Node Version:  v15.5.1
+[debug] [2021-02-10T06:58:37.035Z] Time:          Tue Feb 09 2021 22:58:37 GMT-0800 (Pacific Standard Time)
+[debug] [2021-02-10T06:58:37.035Z] ----------------------------------------------------------------------
+[debug] [2021-02-10T06:58:37.035Z] 
+[debug] [2021-02-10T06:58:37.042Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2021-02-10T06:58:37.042Z] > authorizing via signed-in user
+[debug] [2021-02-10T06:58:37.043Z] [iam] checking project winfit for permissions ["datastore.indexes.create","datastore.indexes.delete","datastore.indexes.list","datastore.indexes.update","firebase.projects.get","firebasehosting.sites.update","firebaserules.releases.create","firebaserules.releases.update","firebaserules.rulesets.create"]
+[debug] [2021-02-10T06:58:37.045Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2021-02-10T06:58:37.045Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2021-02-10T06:58:37.261Z] <<< HTTP RESPONSE 200 {"pragma":"no-cache","cache-control":"no-cache, no-store, max-age=0, must-revalidate","expires":"Mon, 01 Jan 1990 00:00:00 GMT","date":"Wed, 10 Feb 2021 06:58:37 GMT","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2021-02-10T06:58:37.287Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/winfit:testIamPermissions  
+ {"permissions":["datastore.indexes.create","datastore.indexes.delete","datastore.indexes.list","datastore.indexes.update","firebase.projects.get","firebasehosting.sites.update","firebaserules.releases.create","firebaserules.releases.update","firebaserules.rulesets.create"]}
+[debug] [2021-02-10T06:58:37.808Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Wed, 10 Feb 2021 06:58:37 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","server-timing":"gfet4t7; dur=261","alt-svc":"h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2021-02-10T06:58:37.810Z] [iam] error while checking permissions, command may fail: FirebaseError: Authorization failed. This account is missing the following required permissions on project winfit:
+
+  datastore.indexes.create
+  datastore.indexes.delete
+  datastore.indexes.list
+  datastore.indexes.update
+  firebase.projects.get
+  firebasehosting.sites.update
+  firebaserules.releases.create
+  firebaserules.releases.update
+  firebaserules.rulesets.create
+[debug] [2021-02-10T06:58:37.817Z] > refreshing access token with scopes: []
+[debug] [2021-02-10T06:58:37.817Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2021-02-10T06:58:37.982Z] <<< HTTP RESPONSE 200 {"pragma":"no-cache","cache-control":"no-cache, no-store, max-age=0, must-revalidate","expires":"Mon, 01 Jan 1990 00:00:00 GMT","date":"Wed, 10 Feb 2021 06:58:38 GMT","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2021-02-10T06:58:38.011Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/winfit [none]
+[debug] [2021-02-10T06:58:38.435Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/winfit 403
+[debug] [2021-02-10T06:58:38.435Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/winfit {"error":{"code":403,"message":"The caller does not have permission","status":"PERMISSION_DENIED"}}
+[debug] [2021-02-10T06:58:38.436Z] HTTP Error: 403, The caller does not have permission
+[debug] [2021-02-10T06:58:38.577Z] FirebaseError: HTTP Error: 403, The caller does not have permission
+    at module.exports (/usr/local/lib/node_modules/firebase-tools/lib/responseToError.js:38:12)
+    at Client.doRequest (/usr/local/lib/node_modules/firebase-tools/lib/apiv2.js:227:23)
+    at processTicksAndRejections (node:internal/process/task_queues:93:5)
+    at async Client.request (/usr/local/lib/node_modules/firebase-tools/lib/apiv2.js:93:20)
+    at async Object.getFirebaseProject (/usr/local/lib/node_modules/firebase-tools/lib/management/projects.js:289:21)
+    at async Object.getDefaultHostingSite (/usr/local/lib/node_modules/firebase-tools/lib/getDefaultHostingSite.js:8:21)
+    at async requireHostingSite (/usr/local/lib/node_modules/firebase-tools/lib/requireHostingSite.js:9:18)
+    at async Object.fn (/usr/local/lib/node_modules/firebase-tools/lib/commands/deploy.js:66:9)
+    at async /usr/local/lib/node_modules/firebase-tools/lib/command.js:161:17
+[error] 
+[error] Error: Failed to get Firebase project winfit. Please make sure the project exists and your account has permission to access it.

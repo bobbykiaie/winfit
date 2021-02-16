@@ -8,6 +8,7 @@ import CardMedia from "@material-ui/core/CardMedia";
 import { db } from "../../firebase/firebase";
 import Typography from "@material-ui/core/Typography";
 import { useAuth } from "../../providers/UserProvider";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
   root: {
@@ -94,7 +95,10 @@ export default function  MediaCard(prop) {
           />
           <CardContent>
             <Typography gutterBottom variant="h5" component="h2">
+              <Link to={"/dashboard/comp/"+compName}compName={compName}>
               {compName}
+              </Link>
+              
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p">
               Days Remaining: 6

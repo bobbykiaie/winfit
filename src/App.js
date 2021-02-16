@@ -43,7 +43,7 @@ useEffect(()=>{
             <Route exact path="/dashboard">
               {loading ? <h1> </h1> : (isLoggedIn ? <Dashboard /> : <Redirect to="/" />)}
             </Route>
-            <Route exact path="/dashboard/comp">
+            <Route exact path="/dashboard/comp/:comp">
               {loading ? <h1> </h1> : (isLoggedIn ? <CompDetails /> : <Redirect to="/" />)}
             </Route>
             <Route exact path="/">
