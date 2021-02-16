@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "/winfit/static/css/main.afd7172b.chunk.css",
+    "main.js": "/winfit/static/js/main.57769c16.chunk.js",
+    "main.js.map": "/winfit/static/js/main.57769c16.chunk.js.map",
+    "runtime-main.js": "/winfit/static/js/runtime-main.085fd82a.js",
+    "runtime-main.js.map": "/winfit/static/js/runtime-main.085fd82a.js.map",
+    "static/js/2.4f7e881e.chunk.js": "/winfit/static/js/2.4f7e881e.chunk.js",
+    "static/js/2.4f7e881e.chunk.js.map": "/winfit/static/js/2.4f7e881e.chunk.js.map",
+    "index.html": "/winfit/index.html",
+    "static/css/main.afd7172b.chunk.css.map": "/winfit/static/css/main.afd7172b.chunk.css.map",
+    "static/js/2.4f7e881e.chunk.js.LICENSE.txt": "/winfit/static/js/2.4f7e881e.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.085fd82a.js",
+    "static/js/2.4f7e881e.chunk.js",
+    "static/css/main.afd7172b.chunk.css",
+    "static/js/main.57769c16.chunk.js"
+  ]
+}
