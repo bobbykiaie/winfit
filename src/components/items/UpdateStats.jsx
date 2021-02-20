@@ -15,7 +15,20 @@ function UpdateStats(props) {
   const todaysDate = mydate("date");
 
   const { currentUser, userEmail, refresh, refreshState } = useAuth();
+  function dateFormat() {
+    const today = new Date();
+    var monthOption = { month: "short" };
+    var dayOption = { day: "numeric" };
+    var yearOption = { year: "numeric" };
 
+    const month = today.toLocaleDateString("default", monthOption);
+    const day = today.toLocaleDateString("default", dayOption);
+    const year = today.toLocaleDateString("default", yearOption);
+
+    const theDate = month + day + year;
+
+    return theDate;
+  }
   const handleInput = async (event) => {
     if (event.target.name === "steps") {
       setSteps(event.target.value);
@@ -29,10 +42,10 @@ function UpdateStats(props) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const usersRef = db.collection("users").doc(userEmail).collection("stats").doc(todaysDate);
+    const usersRef = db.collection("users").doc(userEmail).collection("stats").doc("dailyStats");
 
     await usersRef.set(
-      { steps: steps, calories: calories } 
+      {calories: {[dateFormat()]: (parseInt(steps))}, steps: {[dateFormat()]: parseInt(calories)}}
       );
     // await usersRef.update(({[todaysDate]: {steps: steps, calories: calories}}))
     refresh(true);
@@ -61,7 +74,7 @@ function UpdateStats(props) {
             <Form.Control
               onChange={handleInput}
               value={steps}
-              type="string"
+              type="number"
               name="steps"
               placeholder="Enter total steps for the day"
             />
@@ -75,7 +88,7 @@ function UpdateStats(props) {
             <Form.Control
               onChange={handleInput}
               value={calories}
-              type="string"
+              type="number"
               name="calories"
               placeholder="Enter total burned calories for the day"
             />

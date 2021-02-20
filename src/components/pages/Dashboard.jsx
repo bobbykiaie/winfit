@@ -19,6 +19,22 @@ const Dashboard = () => {
   const [enrolledComps, setEnrolledComps] = useState([""]);
   const [calories, setCalories] = useState();
   const [steps, setSteps] = useState();
+  var mydate = require("current-date");
+  const todaysDate = mydate("date");
+  function dateFormat() {
+    const today = new Date();
+    var monthOption = { month: "short" };
+    var dayOption = { day: "numeric" };
+    var yearOption = { year: "numeric" };
+
+    const month = today.toLocaleDateString("default", monthOption);
+    const day = today.toLocaleDateString("default", dayOption);
+    const year = today.toLocaleDateString("default", yearOption);
+
+    const theDate = month + day + year;
+
+    return theDate;
+  }
 
   const handleChange = (e) => {
     setInputValue(e.target.value);
@@ -27,6 +43,7 @@ const Dashboard = () => {
 
   const joinComp = (e) => {
     e.preventDefault();
+    const usersRef = db.collection("users").doc(userEmail);
     const compRef = db.collection("Competitions").doc(inputValue);
     compRef
       .get()
@@ -40,6 +57,12 @@ const Dashboard = () => {
               "enrolledIn",
               firebase.firestore.FieldValue.arrayUnion({ compName: inputValue })
             );
+          usersRef
+            .collection("stats")
+            .doc("compStats")
+            .set({
+              [inputValue]: { totalPoints: 0, todaysPoints: 0 },
+            });
           compRef.update(
             "members",
             firebase.firestore.FieldValue.arrayUnion(userEmail)
@@ -71,6 +94,13 @@ const Dashboard = () => {
             name: currentUser,
             email: userEmail,
           });
+          usersRef
+            .collection("stats")
+            .doc("dailyStats")
+            .set({
+              calories: { [dateFormat()]: 0 },
+              steps: { [dateFormat()]: 0 },
+            });
         }
       })
       .catch(function (error) {
@@ -115,19 +145,24 @@ const Dashboard = () => {
         }
       });
     };
-    const userRef2 = db.collection("users").doc(userEmail).collection("stats").doc(todaysDate);
-    
-userRef2.get().then((doc)=>{
-  if(doc.exists){
-    const todaysDate = mydate("date");
-    setCalories(doc.data().calories);
-    setSteps(doc.data().steps);
-  } else {
-    userRef2.set({
-       steps: "None", calories: "None" 
-    })
-  }
-})
+    // const userRef2 = db
+    //   .collection("users")
+    //   .doc(userEmail)
+    //   .collection("stats")
+    //   .doc(todaysDate);
+
+    // userRef2.get().then((doc) => {
+    //   if (doc.exists) {
+    //     const todaysDate = mydate("date");
+    //     setCalories(doc.data().calories);
+    //     setSteps(doc.data().steps);
+    //   } else {
+    //     userRef2.set({
+    //       steps: "None",
+    //       calories: "None",
+    //     });
+    //   }
+    // });
     getComps();
     refresh(false);
   }, [refreshState]);
