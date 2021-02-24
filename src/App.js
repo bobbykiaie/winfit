@@ -13,7 +13,7 @@ import {
 } from "react-router-dom";
 import Dashboard from "./components/pages/Dashboard";
 import Navigation from "./components/items/NavBar";
-
+import Test from "./components/pages/test"
 import NewDash from "./components/pages/NewDash";
 import CompDetails from "./components/pages/CompDetails";
 
@@ -48,6 +48,9 @@ useEffect(()=>{
             </Route>
             <Route exact path="/">
               {isLoggedIn ? <Redirect to="/dashboard" /> : <Login />}
+            </Route>
+            <Route exact path="/test">
+             <Test />
             </Route>
             
           </Switch>

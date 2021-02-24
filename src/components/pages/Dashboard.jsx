@@ -10,6 +10,7 @@ import MediaCard from "../items/CompCard";
 import Paper from "@material-ui/core/Paper";
 import Form from "react-bootstrap/Form";
 import UpdateStats from "../items/UpdateStats";
+import { ControlPointSharp } from "@material-ui/icons";
 
 const Dashboard = () => {
   const { currentUser, userEmail, refresh, refreshState } = useAuth();
@@ -20,7 +21,10 @@ const Dashboard = () => {
   const [calories, setCalories] = useState();
   const [steps, setSteps] = useState();
   var mydate = require("current-date");
-  const todaysDate = mydate("date");
+  
+
+  
+
   function dateFormat() {
     const today = new Date();
     var monthOption = { month: "short" };
@@ -35,7 +39,7 @@ const Dashboard = () => {
 
     return theDate;
   }
-
+  
   const handleChange = (e) => {
     setInputValue(e.target.value);
     console.log(inputValue);
@@ -168,6 +172,7 @@ const Dashboard = () => {
   }, [refreshState]);
   return (
     <Container fluid>
+      
       <Row>
         <Col className="mx-auto">
           <h1>Welcome {currentUser}</h1>

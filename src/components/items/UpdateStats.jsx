@@ -39,14 +39,38 @@ function UpdateStats(props) {
       console.log(calories);
     }
   };
+  const checkDates = () => {
+    const usersRef = db.collection("users").doc(userEmail).collection("stats").doc("dailyStats");
+  
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
     const usersRef = db.collection("users").doc(userEmail).collection("stats").doc("dailyStats");
+    await usersRef.get().then(doc => {
+      const testDate = dateFormat();
+      const retrievedSteps = doc.data().steps
+      const retrievedDate = Object.keys(retrievedSteps)[0]
+      
+      if(retrievedDate===testDate){
+         usersRef.set(
+          {calories: {[dateFormat()]: (parseInt(steps))}, steps: {[dateFormat()]: parseInt(calories)}}
+          );
+      }else{
+        usersRef.update({
+        
+          [`steps.${testDate}`]: steps,
+          [`calories.${testDate}`]: calories
+        });
+      }
+    
+    })
 
-    await usersRef.set(
-      {calories: {[dateFormat()]: (parseInt(steps))}, steps: {[dateFormat()]: parseInt(calories)}}
-      );
+   
+     
+    
+    
     // await usersRef.update(({[todaysDate]: {steps: steps, calories: calories}}))
     refresh(true);
   };
