@@ -12,9 +12,9 @@ import { Image } from "react-bootstrap";
 import { Icon, InlineIcon } from "@iconify/react";
 import footstepsIcon from "@iconify-icons/ion/footsteps";
 
-import sigmaIcon from '@iconify-icons/mdi/sigma';
+import sigmaIcon from "@iconify-icons/mdi/sigma";
 
-import fireIcon from '@iconify-icons/el/fire';
+import fireIcon from "@iconify-icons/el/fire";
 
 const Styles = styled.div`
   font-family: "Roboto", sans-serif;
@@ -65,8 +65,8 @@ const Styles = styled.div`
     padding: 20px;
   }
   .avatar {
-    height: 90px;
-    width: 90px;
+    height: 8vw;
+    width: 8vw;
     background-color: #bbb;
     border-radius: 50%;
     margin: 40px;
@@ -126,6 +126,8 @@ const CompDetails = (props) => {
   const [enrolledMembers, setEnrolledMembers] = useState();
   const [memberData, setMemberData] = useState();
   const [refreshing, setRefreshing] = useState(false);
+  const [currentUserSteps, setCurrentUserSteps] = useState();
+  const [currentUserCalories, setCurrentUserCalories] = useState();
 
   const compRef = db.collection("Competitions").doc(comp);
 
@@ -143,6 +145,30 @@ const CompDetails = (props) => {
 
     return theDate;
   }
+  const testButton = () => {
+    console.log(userEmail);
+    const userRef = db
+      .collection("users")
+      .doc(userEmail)
+      .collection("stats")
+      .doc("dailyStats");
+    userRef.get().then((doc) => {
+      const formattedDate = dateFormat();
+      const { steps, calories } = doc.data();
+      const stepsArray = [];
+
+      for (const date in steps) {
+        stepsArray.push({ [date]: steps[date] });
+      }
+      const stepDateFilter = stepsArray.filter(
+        (entry) => Object.keys(entry)[0] === formattedDate
+      );
+      const todaysSteps = stepDateFilter[0]
+        ? Object.values(stepDateFilter[0])[0]
+        : 0;
+      console.log(todaysSteps);
+    });
+  };
 
   const getMembers = async () => {
     await compRef.get().then(async (doc) => {
@@ -157,6 +183,43 @@ const CompDetails = (props) => {
       } else {
         setEnrolledMembers(["None"]);
       }
+    });
+  };
+
+  const getCurrentUserStats = () => {
+    console.log(userEmail);
+    const userRef = db
+      .collection("users")
+      .doc(userEmail)
+      .collection("stats")
+      .doc("dailyStats");
+    userRef.get().then((doc) => {
+      const formattedDate = dateFormat();
+      const { steps, calories } = doc.data();
+      const stepsArray = [];
+
+      for (const date in steps) {
+        stepsArray.push({ [date]: steps[date] });
+      }
+      const stepDateFilter = stepsArray.filter(
+        (entry) => Object.keys(entry)[0] === formattedDate
+      );
+      const caloriesArray = [];
+      for (const date in calories) {
+        caloriesArray.push({ [date]: calories[date] });
+      }
+
+      const calorieDateFilter = caloriesArray.filter(
+        (entry) => Object.keys(entry)[0] === formattedDate
+      );
+      const todaysSteps = stepDateFilter[0]
+        ? Object.values(stepDateFilter[0])[0]
+        : 0;
+      const todaysCalories = calorieDateFilter[0]
+        ? Object.values(calorieDateFilter[0])[0]
+        : 0;
+      setCurrentUserCalories(todaysCalories);
+      setCurrentUserSteps(todaysSteps);
     });
   };
 
@@ -237,101 +300,111 @@ const CompDetails = (props) => {
   useEffect(() => {
     setMemberData([]);
     getMembers();
+    getCurrentUserStats();
   }, [refreshing]);
 
   return (
     <Styles>
       <h1>{comp}</h1>
+      <button onClick={testButton}></button>
       <Container fluid>
         <Row>
-          <Col>
-            <Container fluid>
-              <Row className="justify-content-md-center">
-                <Col className="mx-auto">
-                  <Card>
-                    <Container fluid>
-                      <Row className="justify-content-md-center">
-                        <Col className="mx-auto align-items-stretch">
-                          <div className="avatar"></div>
-                        </Col>
-                        <Col className="mx-auto">
-                          <div className="avatar"></div>
-                        </Col>
-                        <Col className="mx-auto">
-                          <div className="avatar"></div>
-                        </Col>
-                      </Row>
-                      <Row className="justify-content-md-center">
-                        <Col className="mx-auto">
-                          <AccentCard>
-                            <Row className="justify-content-md-center">
+          <Col lg={6}>
+            <Row className="justify-content-xs-center">
+              <Col className="mx-auto">
+                <Card>
+                  <Row className="justify-content-md-center">
+                    <Col className="mx-auto align-items-stretch">
+                      <div className="avatar"></div>
+                    </Col>
+                    <Col className="mx-auto">
+                      <div className="avatar"></div>
+                    </Col>
+                    <Col className="mx-auto">
+                      <div className="avatar"></div>
+                    </Col>
+                  </Row>
+                  <Row id="" className="justify-content-md-center">
+                    <Col className="mx-auto">
+                      <AccentCard>
+                        <Row className="justify-content-md-center">
+                          <Col>
+                            <Row>
+                              <Col className="userStats">Steps</Col>
+                            </Row>
+                            <Row>
+                              <Col className="userStats">Calories</Col>
+                            </Row>
+                            <Row>
+                              <Col className="userStats">Weight</Col>
+                            </Row>
+                          </Col>
+                          <Col className="text-center">
+                       
+                          </Col>
+                          <Col className="text-center">
+                            <Row>
                               <Col>
-                                <Row>
-                                  <Col className="userStats">Steps</Col>
-                                </Row>
-                                <Row>
-                                  <Col className="userStats">Calories</Col>
-                                </Row>
-                                <Row>
-                                  <Col className="userStats">Weight</Col>
-                                </Row>
-                              </Col>
-                              <Col className="text-center">
-                                <p>arse</p>
-                              </Col>
-                              <Col className="text-center">
-                                <p>arse</p>
+                            
+                                {currentUserSteps}
                               </Col>
                             </Row>
-                          </AccentCard>
-                        </Col>
-                      </Row>
-                    </Container>
-                  </Card>
-                </Col>
-              </Row>
-              <Row>
-                <Col className="mx-auto">
-                  <Card className="messages">Arse</Card>
-                </Col>
-              </Row>
-            </Container>
+                            <Row>
+                              <Col>
+                          
+                                {currentUserCalories}
+                              </Col>
+                            </Row>
+                          </Col>
+                        </Row>
+                      </AccentCard>
+                    </Col>
+                  </Row>
+                </Card>
+              </Col>
+            </Row>
+            <Row>
+              <Col className="mx-auto">
+                <Card className="messages">Arse</Card>
+              </Col>
+            </Row>
           </Col>
           <Col className="mx-auto ">
             <Card className="leaderBoard">
-              <Container fluid>
-                <Row>
-                  <Col className="text-center">
-                    <p style={{ fontSize: 50, color: "#747373" }}>
-                      Leader Board
-                    </p>
-                  </Col>
-                </Row>
-                <Row className="justify-content-right">
-                  <Col></Col>
-                  <Col className="rightAlign" xs={{ offset: 6 }}>
-                    <span style={{marginRight: 10}}><Icon icon={footstepsIcon} /></span>
-                    <span style={{marginRight: 10}}><Icon icon={fireIcon} /></span> 
-                    <span style={{marginRight: 10}}><Icon icon={sigmaIcon} /></span>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col className="middleAlign">
-                    <Image
-                      style={{ height: 40, width: 40 }}
-                      src="https://firebasestorage.googleapis.com/v0/b/winfit-302321.appspot.com/o/F30E171C-6C3B-4CCA-9373-755B1131FB2A.jpeg?alt=media&token=8253a89c-fb0d-4894-bebc-be7539302640"
-                      roundedCircle
-                    />
-                    <span style={{ padding: 10 }}>Bobby</span>
-                  </Col>
+              <Row>
+                <Col className="text-center">
+                  <p style={{ fontSize: 50, color: "#747373" }}>Leader Board</p>
+                </Col>
+              </Row>
+              <Row className="justify-content-right">
+                <Col className="rightAlign" xs={{ offset: 6 }}>
+                  <span style={{ marginRight: 10 }}>
+                    <Icon icon={footstepsIcon} />
+                  </span>
+                  <span style={{ marginRight: 10 }}>
+                    <Icon icon={fireIcon} />
+                  </span>
+                  <span style={{ marginRight: 10 }}>
+                    <Icon icon={sigmaIcon} />
+                  </span>
+                </Col>
+              </Row>
+              <Row>
+                <Col className="middleAlign">
+                  <Image
+                    style={{ height: 40, width: 40 }}
+                    src="https://firebasestorage.googleapis.com/v0/b/winfit-302321.appspot.com/o/F30E171C-6C3B-4CCA-9373-755B1131FB2A.jpeg?alt=media&token=8253a89c-fb0d-4894-bebc-be7539302640"
+                    roundedCircle
+                  />
+                  <span style={{ padding: 10 }}>Bobby</span>
+                </Col>
 
-                  <Col className="rightAlign">
-                    <span style={{ marginRight: 10 }}>50</span>
-                    <span style={{ marginRight: 10 }}>50</span>
-                    <span style={{ marginRight: 10 }}>50</span>
-                  </Col>
-                </Row>
-              </Container>
+                <Col className="rightAlign">
+                  <span style={{ marginRight: 10 }}>50</span>
+                  <span style={{ marginRight: 10 }}>50</span>
+                  <span style={{ marginRight: 10 }}>50</span>
+                </Col>
+              </Row>
             </Card>
           </Col>
         </Row>
