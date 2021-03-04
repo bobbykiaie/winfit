@@ -67,6 +67,7 @@ const Styles = styled.div`
   .avatar {
     height: 8vw;
     width: 8vw;
+   
     background-color: #bbb;
     border-radius: 50%;
     margin: 40px;
@@ -146,28 +147,7 @@ const CompDetails = (props) => {
     return theDate;
   }
   const testButton = () => {
-    console.log(userEmail);
-    const userRef = db
-      .collection("users")
-      .doc(userEmail)
-      .collection("stats")
-      .doc("dailyStats");
-    userRef.get().then((doc) => {
-      const formattedDate = dateFormat();
-      const { steps, calories } = doc.data();
-      const stepsArray = [];
-
-      for (const date in steps) {
-        stepsArray.push({ [date]: steps[date] });
-      }
-      const stepDateFilter = stepsArray.filter(
-        (entry) => Object.keys(entry)[0] === formattedDate
-      );
-      const todaysSteps = stepDateFilter[0]
-        ? Object.values(stepDateFilter[0])[0]
-        : 0;
-      console.log(todaysSteps);
-    });
+    console.log(memberData);
   };
 
   const getMembers = async () => {
@@ -306,22 +286,33 @@ const CompDetails = (props) => {
   return (
     <Styles>
       <h1>{comp}</h1>
-      <button onClick={testButton}></button>
+      <button onClick={testButton}>Click Me</button>
       <Container fluid>
         <Row>
           <Col lg={6}>
             <Row className="justify-content-xs-center">
               <Col className="mx-auto">
                 <Card>
-                  <Row className="justify-content-md-center">
-                    <Col className="mx-auto align-items-stretch">
-                      <div className="avatar"></div>
+                  <Row className="justify-content-md-center align-middle">
+                    <Col xs={4} className="mx-auto text-center p-4 ">
+                      <Image
+                            style={{width: "100px", height: "100px"}}
+                             src="https://firebasestorage.googleapis.com/v0/b/winfit-302321.appspot.com/o/F30E171C-6C3B-4CCA-9373-755B1131FB2A.jpeg?alt=media&token=8253a89c-fb0d-4894-bebc-be7539302640"
+                             roundedCircle
+                          fluid />
+                     
                     </Col>
-                    <Col className="mx-auto">
-                      <div className="avatar"></div>
+                    <Col xs={4} className="mx-auto text-center p-5">
+                      <p className="text-center"  ><h2>200</h2></p>
+                     
                     </Col>
-                    <Col className="mx-auto">
-                      <div className="avatar"></div>
+                    <Col xs={4} className="mx-auto text-center p-4">
+                      <Image
+                            style={{width: "100px", height: "100px"}}
+                             src="https://firebasestorage.googleapis.com/v0/b/winfit-302321.appspot.com/o/F30E171C-6C3B-4CCA-9373-755B1131FB2A.jpeg?alt=media&token=8253a89c-fb0d-4894-bebc-be7539302640"
+                             roundedCircle
+                          fluid />
+                     
                     </Col>
                   </Row>
                   <Row id="" className="justify-content-md-center">
@@ -339,21 +330,13 @@ const CompDetails = (props) => {
                               <Col className="userStats">Weight</Col>
                             </Row>
                           </Col>
-                          <Col className="text-center">
-                       
-                          </Col>
+                          <Col className="text-center"></Col>
                           <Col className="text-center">
                             <Row>
-                              <Col>
-                            
-                                {currentUserSteps}
-                              </Col>
+                              <Col>{currentUserSteps}</Col>
                             </Row>
                             <Row>
-                              <Col>
-                          
-                                {currentUserCalories}
-                              </Col>
+                              <Col>{currentUserCalories}</Col>
                             </Row>
                           </Col>
                         </Row>
@@ -365,19 +348,21 @@ const CompDetails = (props) => {
             </Row>
             <Row>
               <Col className="mx-auto">
-                <Card className="messages">Arse</Card>
+                <Card className="messages">Message Board</Card>
               </Col>
             </Row>
           </Col>
-          <Col className="mx-auto ">
+          <Col className="mx-auto m-0 ">
             <Card className="leaderBoard">
               <Row>
                 <Col className="text-center">
-                  <p style={{ fontSize: 50, color: "#747373" }}>Leader Board</p>
+                  <p style={{ color: "#747373" }}>
+                    <h3>Leader Board</h3>
+                  </p>
                 </Col>
               </Row>
               <Row className="justify-content-right">
-                <Col className="rightAlign" xs={{ offset: 6 }}>
+                <Col className="rightAlign pb-3" xs={{ offset: 6 }}>
                   <span style={{ marginRight: 10 }}>
                     <Icon icon={footstepsIcon} />
                   </span>
@@ -389,22 +374,38 @@ const CompDetails = (props) => {
                   </span>
                 </Col>
               </Row>
-              <Row>
-                <Col className="middleAlign">
-                  <Image
-                    style={{ height: 40, width: 40 }}
-                    src="https://firebasestorage.googleapis.com/v0/b/winfit-302321.appspot.com/o/F30E171C-6C3B-4CCA-9373-755B1131FB2A.jpeg?alt=media&token=8253a89c-fb0d-4894-bebc-be7539302640"
-                    roundedCircle
-                  />
-                  <span style={{ padding: 10 }}>Bobby</span>
-                </Col>
+              {memberData ? (
+                memberData.map((user) => {
+                  return (
+                    <Row>
+                      <Col className="middleAlign">
+                        <Row>
+                          <Col xs="auto"className="pb-1">
+                            <Image
+                              style={{ height: 40, width: 40 }}
+                              src="https://firebasestorage.googleapis.com/v0/b/winfit-302321.appspot.com/o/F30E171C-6C3B-4CCA-9373-755B1131FB2A.jpeg?alt=media&token=8253a89c-fb0d-4894-bebc-be7539302640"
+                              roundedCircle
+                            />
+                            <span style={{ padding: 10, fontSize: "85%" }}>
+                              {user.name}
+                            </span>
+                          </Col>
+                        </Row>
+                      </Col>
 
-                <Col className="rightAlign">
-                  <span style={{ marginRight: 10 }}>50</span>
-                  <span style={{ marginRight: 10 }}>50</span>
-                  <span style={{ marginRight: 10 }}>50</span>
-                </Col>
-              </Row>
+                      <Col xs="auto" className="rightAlign pb-0">
+                        <span style={{ marginRight: 19 }}>{parseInt(user.steps)}</span>
+                        <span style={{ marginRight: 17 }}>{parseInt(user.calories)}</span>
+                        <span style={{ marginRight: 14 }}>
+                          {parseInt(user.steps) + parseInt(user.calories)}
+                        </span>
+                      </Col>
+                    </Row>
+                  );
+                })
+              ) : (
+                <h1>None</h1>
+              )}
             </Card>
           </Col>
         </Row>
